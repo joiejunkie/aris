@@ -43,6 +43,10 @@ router.get('/lineCharts/energyUse', (req, res, next) => {
 router.get('/others/Pictograph', (req, res, next) => {
     res.sendFile(__dirname + '/charts/others/pictograph.html');
 });
+/* sankey */
+router.get('/others/Sankey', (req, res, next) => {
+    res.sendFile(__dirname + '/charts/others/sankey.html');
+});
 
 /* ---------- SCATTERPLOT ----------*/
 
