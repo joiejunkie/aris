@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- JS script links -->
+    <title>Simple Bar Chart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://localhost:3000/">Repository</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="http://localhost:3000/">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- prepare a DOM container with width and height -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <!-- Echarts script -->
+    <script type="text/javascript">
+        // based on prepared DOM, initialize echarts instance
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var xAxisData = [];
+        var data1 = [];
+        var data2 = [];
+        for (var i = 0; i < 100; i++) {
+            xAxisData.push(i);
+            data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
+            data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
+        }
+
+        var option = {
+            title: {
+                text: 'Simple Bar Chart'
+            },
+            legend: {
+                data: ['sku1', 'sku2'],
+                align: 'left',
+                orient: 'horizontal',
+                x: 'center',
+                bottom: 10
+            },
+            tooltip: {},
+            xAxis: {
+                data: xAxisData,
+                silent: false,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {},
+            series: [{
+                name: 'sku1',
+                type: 'bar',
+                data: data1,
+                animationDelay: function(idx) {
+                    return idx * 10;
+                }
+            }, {
+                name: 'sku2',
+                type: 'bar',
+                data: data2,
+                animationDelay: function(idx) {
+                    return idx * 10 + 100;
+                }
+            }],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function(idx) {
+                return idx * 5;
+            }
+        };
+
+        // use configuration item and data specified to show chart
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>

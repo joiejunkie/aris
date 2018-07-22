@@ -1,0 +1,88 @@
+doctype html
+html(lang='en')
+  head
+    title Bootstrap Example
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+  body
+    - bcharts = ['Simple Bar Chart', 'Waterfalls']
+    - lcharts = ['Time Series Plot', 'Energy Use']
+    - scatters = ['Scatter Zoom','Men v Women']
+    - heatmaps = ['Cartesian Weekly']
+    - charts = ['Pictograph']
+
+
+
+    -var a = function(y, x){ return "<a href=/"+y+"/"+x.split(' ').join('')+">"+x+"</a>" }
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='http://localhost:3000/') Repository
+        ul.nav.navbar-nav
+          li.active
+            a(href='http://localhost:3000/') Home
+            
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Bar Charts 
+              span.caret
+            ul.dropdown-menu
+              each bchart in bcharts
+                li
+                  span.
+                  p !{a("barCharts", bchart)}
+                  span.
+
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Line Charts
+              span.caret
+            ul.dropdown-menu
+              each lchart in lcharts
+                li
+                  span.
+                  p !{a('lineCharts', lchart)}
+                  span.
+
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Scatterplots 
+              span.caret
+            ul.dropdown-menu
+              each scatter in scatters
+                li
+                  span.
+                  p !{a("scatterPlots", scatter)}
+                  span.
+
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Heatmaps 
+              span.caret
+            ul.dropdown-menu
+              each heatmap in heatmaps
+                li
+                  span.
+                  p !{a("heatmaps", heatmap)}
+                  span.
+             
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Other Charts 
+              span.caret
+            ul.dropdown-menu
+              each chart in charts
+                li
+                  span.
+                  p !{a('others', chart)}
+                  span.
+
+    .container
+      .jumbotron
+        h1 Charts Repository
+        p
+          | Use the menu above to select sample charts.
+

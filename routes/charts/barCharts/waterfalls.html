@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Waterfalls</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://localhost:3000/">Repository</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="http://localhost:3000/">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- prepare a DOM container with width and height -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <!-- Echarts script -->
+    <script type="text/javascript">
+        // based on prepared DOM, initialize echarts instance
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // specify chart configuration item and data
+        var option = {
+            title: {
+                text: 'Waterfalls'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    var tar;
+                    var tardesc;
+                    var tot;
+                    if (params[1].value != '-') {
+                        tar = params[1];
+                        rsv = params[0];
+                        tot = rsv.value + tar.value;
+
+                    } else {
+                        tar = params[2];
+                        rsv = params[0];
+                        tot = rsv.value;
+
+                    }
+                    return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value + '<br/>' + 'Reserves' +
+                        ' : ' + tot;
+
+                }
+            },
+            legend: {
+                data: ['Loss', 'Profit'],
+                orient: 'horizontal',
+                x: 'center',
+                top: 20
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                splitLine: {
+                    show: false
+                },
+                data: function() {
+                    var list = [];
+                    for (var i = 1; i <= 11; i++) {
+                        list.push('M' + i);
+                    }
+                    return list;
+                }()
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: 'Reserves',
+                type: 'bar',
+                stack: '总量',
+                itemStyle: {
+                    normal: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                    },
+                    emphasis: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                    }
+                },
+                data: [0, 900, 1245, 1530, 1376, 1376, 1511, 1689, 1856, 1495, 1292]
+            }, {
+                name: 'Profit',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                data: [900, 345, 393, '-', '-', 135, 178, 286, '-', '-', '-']
+            }, {
+                name: 'Loss',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'bottom'
+                    }
+                },
+                data: ['-', '-', '-', 108, 154, '-', '-', '-', 119, 361, 203]
+            }]
+        };
+
+
+        // use configuration item and data specified to show chart
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>

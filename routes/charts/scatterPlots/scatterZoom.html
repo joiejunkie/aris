@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Scatterplot with zoom</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://localhost:3000/">Repository</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="http://localhost:3000/">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- prepare a DOM container with width and height -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <!-- Echarts script -->
+    <script type="text/javascript">
+        // based on prepared DOM, initialize echarts instance
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // specify chart configuration item and data
+
+        //Create 3 empty arrays
+        var data1 = [];
+        var data2 = [];
+        var data3 = [];
+
+        //Create a function that will generate random numbers. The function will have a parameter 'max' that defines the range.
+        //The random numbers generated will be rounded up to 3 decimal places.
+        var random = function(max) {
+            return (Math.random() * max).toFixed(3);
+        };
+
+        //Fill up each f the arrays with 500 observations. Each observation will be a 3-tuple (x, y, z) where 0<x<15, 0<y<10 and 0<z<1.
+        //Note the exception in the second array where 0<x<10.
+        for (var i = 0; i < 500; i++) {
+            data1.push([random(15), random(10), random(1)]);
+            data2.push([random(10), random(10), random(1)]);
+            data3.push([random(15), random(10), random(1)]);
+        }
+
+        var option = {
+            animation: false,
+            legend: {
+                data: ['scatter', 'scatter2', 'scatter3']
+            },
+            tooltip: {},
+
+            //Specifying axes
+            xAxis: {
+                type: 'value',
+                min: 'dataMin',
+                max: 'dataMax',
+                splitLine: {
+                    show: true
+                }
+            },
+            yAxis: {
+                type: 'value',
+                min: 'dataMin',
+                max: 'dataMax',
+                splitLine: {
+                    show: true
+                }
+            },
+
+            //Specifying sliders. The 'start' and 'end' parameters where the slider button begins and ends.
+            // The type 'slider' stands for the slider. I am not sure what 'inside' stands for.
+            dataZoom: [{
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+                start: 1,
+                end: 35
+            }, {
+                type: 'slider',
+                show: true,
+                yAxisIndex: [0],
+                left: '93%',
+                start: 29,
+                end: 36
+            }, {
+                type: 'inside',
+                xAxisIndex: [0],
+                start: 1,
+                end: 35
+            }, {
+                type: 'inside',
+                yAxisIndex: [0],
+                start: 29,
+                end: 36
+            }],
+
+
+            //The data series
+            series: [{
+                name: 'scatter',
+                type: 'scatter',
+                itemStyle: {
+                    normal: {
+                        opacity: 0.8
+                    }
+                },
+                // The symbol size is made dynamic with the size calculated using a function.
+                // The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+                symbolSize: function(val) {
+                    return val[2] * 40;
+                },
+                data: data1
+            }, {
+                name: 'scatter2',
+                type: 'scatter',
+                itemStyle: {
+                    normal: {
+                        opacity: 0.8
+                    }
+                },
+                symbolSize: function(val) {
+                    return val[2] * 40;
+                },
+                data: data2
+            }, {
+                name: 'scatter3',
+                type: 'scatter',
+                itemStyle: {
+                    normal: {
+                        opacity: 0.8,
+                    }
+                },
+                symbolSize: function(val) {
+                    return val[2] * 40;
+                },
+                data: data3
+            }]
+        }
+
+        // use configuration item and data specified to show chart
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>
