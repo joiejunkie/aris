@@ -3,7 +3,7 @@
 
 <head>
     <!-- JS script links -->
-    <title>Sankey Diagram - Sources And Uses</title>
+    <title>Energy Use over a 24 hour period</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -29,72 +29,115 @@
     </nav>
 
     <!-- prepare a DOM container with width and height -->
-    <div id="main" style="width: 960px;height:600px;"></div>
+    <div id="main" style="width: 600px;height:400px;"></div>
 
     <!-- Echarts script -->
     <script type="text/javascript">
         // based on prepared DOM, initialize echarts instance
         var myChart = echarts.init(document.getElementById('main'));
 
-        // 'nodes': [{'name': 'x'},etc]
-        // 'links': [{'source':'x','target':'y','value':'z'}]
+        // specify chart configuration item and data
 
+        //An array of data
+        //var data = [300, 280, 250, 260, 270, 300, 550, 500, 400, 390, 380, 390, 400, 500, 600, 750, 800, 700, 600, 400];
         var input;
-        $.get('https://raw.githubusercontent.com/joiejunkie/aris/master/data_sources/production/energy.json',
+        $.get('https://raw.githubusercontent.com/joiejunkie/aris/master/data_sources/production/energyUse.json',
             function(data) {
-
-                //The data does not come in the right form. We have to first parse it into JSON before we can use it below
-                let input = JSON.parse(data)
 
                 var option = {
                     title: {
-                        text: 'Sankey Diagram - Energy Sources and Uses'
+                        text: 'Energy Use Over A 24-Hour Period'
                     },
-                    // left: '0%',
-                    width: '600',
                     tooltip: {
-                        trigger: 'item',
-                        triggerOn: 'mousemove'
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        }
+                    },
+
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['00:00', '01:15', '02:30', '03:45', '05:00', '06:15', '07:30', '08:45', '10:00',
+                            '11:15',
+                            '12:30', '13:45', '15:00', '16:15', '17:30', '18:45', '20:00', '21:15', '22:30',
+                            '23:45'
+                        ]
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} W'
+                        },
+                        axisPointer: {
+                            snap: true
+                        }
+                    },
+                    //The observation count is zero-based (i.e. the count starts at zero)
+                    visualMap: {
+                        show: false,
+                        dimension: 0,
+                        pieces: [
+
+                            //All observations before and including the 6th observation should be green  
+                            {
+                                lte: 6,
+                                color: 'green'
+                            },
+
+                            //All observations after the 6th but before and including the 8th observation should be red 
+                            {
+                                gt: 6,
+                                lte: 8,
+                                color: 'red'
+                            },
+
+                            //All observations after the 8th but before and including the 14th observation should be green
+                            {
+                                gt: 8,
+                                lte: 14,
+                                color: 'green'
+                            }, {
+                                gt: 14,
+                                lte: 17,
+                                color: 'red'
+                            }, {
+                                gt: 17,
+                                color: 'green'
+                            }
+                        ]
                     },
                     series: [{
-                        type: 'sankey',
-                        top: '10%', //positioning the chart below the title
-                        layout: 'none',
-                        data: input.nodes,
-                        links: input.links,
-                        itemStyle: { //The style of node rectangle in sankey graphs.
-                            normal: {
-                                borderWidth: 1,
-                                borderColor: '#aaa'
-                            }
-                        },
-                        lineStyle: {
-                            //The line style of sankey graph, in which lineStyle.color can be assigned to the value of 'source' of 'target', then the edge will automatically take the source node or target node color as its own color.
-                            normal: {
-                                color: 'source',
-                                curveness: 0.5
-                            }
+                        name: 'Energy Usage',
+                        type: 'line',
+                        smooth: true,
+                        data: data,
+                        markArea: {
+                            data: [
+                                [{
+                                    name: 'Morning Peak Period',
+                                    xAxis: '07:30'
+                                }, {
+                                    xAxis: '10:00'
+                                }],
+                                [{
+                                    name: 'Evening Peak Period',
+                                    xAxis: '17:30'
+                                }, {
+                                    xAxis: '21:15'
+                                }]
+                            ]
                         }
-                        // ,
-                        // rich: {
-                        //     c: {
-                        //         color: 'red',
-                        //         width: '100%'
-                        //     }
-                        // }
                     }]
                 };
 
+
+                // use configuration item and data specified to show chart
                 myChart.setOption(option);
 
             }
-        )
+        );
     </script>
-</body>
-
-</html> }, { gt: 14, lte: 17, color: 'red' }, { gt: 17, color: 'green' } ] }, series: [{ name: 'Energy Usage', type: 'line', smooth: true, data: data, markArea: { data: [ [{ name: 'Morning Peak Period', xAxis: '07:30' }, { xAxis: '10:00' }], [{ name: 'Evening
-Peak Period', xAxis: '17:30' }, { xAxis: '21:15' }] ] } }] }; // use configuration item and data specified to show chart myChart.setOption(option);
-</script>
 </body>
 
 </html>
