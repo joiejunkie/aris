@@ -3,7 +3,7 @@
 
 <head>
     <!-- JS script links -->
-    <title>timeSeriesPlot</title>
+    <title>Sankey Diagram - Sources And Uses</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,120 +18,84 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="http://localhost:3000/">Repository</a>
+                <a class="navbar-brand" href="https://pacific-falls-73173.herokuapp.com/">Repository</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="http://localhost:3000/">Home</a>
+                    <a href="https://pacific-falls-73173.herokuapp.com/">Home</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <!-- prepare a DOM container with width and height -->
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width: 960px;height:600px;"></div>
 
     <!-- Echarts script -->
     <script type="text/javascript">
         // based on prepared DOM, initialize echarts instance
         var myChart = echarts.init(document.getElementById('main'));
 
-        // specify chart configuration item and data
+        // 'nodes': [{'name': 'x'},etc]
+        // 'links': [{'source':'x','target':'y','value':'z'}]
 
-        //Generate 2 sets of data: dates and numbers
-        //With dates, you create the starting date ('base') and measurement unit ('oneDay'). The dates are stuffed in the array 'date'.
-        var base = +new Date(2012, 9, 3);
-        var oneDay = 24 * 3600 * 1000;
-        var date = [];
+        var input;
+        $.get('https://raw.githubusercontent.com/joiejunkie/aris/master/data_sources/production/energy.json',
+            function(data) {
 
-        //With the numbers, you craete an array ('data') and include a starting number.
-        var data = [Math.random() * 300];
+                //The data does not come in the right form. We have to first parse it into JSON before we can use it below
+                let input = JSON.parse(data)
 
-        //Next, you create 20,000 observations where each observation is a 2-tuple made up of a date and a number.
-        //The dates are given a format 'yyyy/mm/dd'. You have to add 1 to the months because the 'month' property starts with base 0.
-        for (var i = 1; i < 20000; i++) {
-            var now = new Date(base += oneDay);
-            date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
-            data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
-        }
+                var option = {
+                    title: {
+                        text: 'Sankey Diagram - Energy Sources and Uses'
+                    },
+                    // left: '0%',
+                    width: '600',
+                    tooltip: {
+                        trigger: 'item',
+                        triggerOn: 'mousemove'
+                    },
+                    series: [{
+                        type: 'sankey',
+                        top: '10%', //positioning the chart below the title
+                        layout: 'none',
+                        data: input.nodes,
+                        links: input.links,
+                        itemStyle: { //The style of node rectangle in sankey graphs.
+                            normal: {
+                                borderWidth: 1,
+                                borderColor: '#aaa'
+                            }
+                        },
+                        lineStyle: {
+                            //The line style of sankey graph, in which lineStyle.color can be assigned to the value of 'source' of 'target', then the edge will automatically take the source node or target node color as its own color.
+                            normal: {
+                                color: 'source',
+                                curveness: 0.5
+                            }
+                        }
+                        // ,
+                        // rich: {
+                        //     c: {
+                        //         color: 'red',
+                        //         width: '100%'
+                        //     }
+                        // }
+                    }]
+                };
 
-        var option = {
-            tooltip: {
-                trigger: 'axis',
-                position: function(pt) {
-                    return [pt[0], '10%'];
-                }
-            },
-            title: {
-                left: 'center',
-                text: 'Time Series Plot - Cinnamon Snail Price',
-            },
+                myChart.setOption(option);
 
-            // // toolbox provides features such as 'Save as Image' which allow you to save the image as a png or jpeg
-            // toolbox: {
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: date
-            },
-            yAxis: {
-                type: 'value',
-                boundaryGap: [0, '100%']
-            },
-            dataZoom: [{
-                type: 'inside',
-                start: 0,
-                end: 10
-            }, {
-                start: 0,
-                end: 10,
-                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                handleSize: '80%',
-                handleStyle: {
-                    color: '#fff',
-                    shadowBlur: 3,
-                    shadowColor: 'rgba(0, 0, 0, 0.6)',
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
-                }
-            }],
-            series: [{
-                name: 'Price',
-                type: 'line',
-                smooth: true,
-                symbol: 'none',
-                sampling: 'average',
-                itemStyle: {
-                    normal: {
-                        color: 'rgb(255, 70, 131)'
-                    }
-                },
-                areaStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgb(255, 158, 68)'
-                        }, {
-                            offset: 1,
-                            color: 'rgb(188, 188, 137)'
-                        }])
-                    }
-                },
-                data: data
-            }]
-        };
-
-        // use configuration item and data specified to show chart
-        myChart.setOption(option);
+            }
+        )
     </script>
+</body>
+
+</html> end: 10, handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z', handleSize: '80%', handleStyle:
+{ color: '#fff', shadowBlur: 3, shadowColor: 'rgba(0, 0, 0, 0.6)', shadowOffsetX: 2, shadowOffsetY: 2 } }], series: [{ name: 'Price', type: 'line', smooth: true, symbol: 'none', sampling: 'average', itemStyle: { normal: { color: 'rgb(255, 70, 131)' }
+}, areaStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgb(255, 158, 68)' }, { offset: 1, color: 'rgb(188, 188, 137)' }]) } }, data: data }] }; // use configuration item and data specified to show chart myChart.setOption(option);
+</script>
 </body>
 
 </html>
