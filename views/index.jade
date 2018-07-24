@@ -10,6 +10,7 @@ html(lang='en')
   body
     - bcharts = ['Simple Bar Chart', 'Waterfalls']
     - lcharts = ['Time Series Plot', 'Energy Use']
+    - pcharts = ['Simple Pie Chart']
     - scatters = ['Scatter Zoom','Men v Women']
     - heatmaps = ['Cartesian Weekly']
     - charts = ['Pictograph','Sankey']
@@ -47,6 +48,17 @@ html(lang='en')
                   p !{a('lineCharts', lchart)}
                   span.
 
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Pie Charts
+              span.caret
+            ul.dropdown-menu
+              each pchart in pcharts
+                li
+                  span.
+                  p !{a('pieCharts', pchart)}
+                  span.
+                  
           li.dropdown
             a.dropdown-toggle(data-toggle='dropdown', href='#')
               | Scatterplots 

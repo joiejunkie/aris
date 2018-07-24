@@ -47,6 +47,12 @@ router.get('/others/Pictograph', (req, res, next) => {
 router.get('/others/Sankey', (req, res, next) => {
     res.sendFile(__dirname + '/charts/others/sankey.html');
 });
+/* ---------- PIE CHARTS ----------*/
+
+/* simplePieChart */
+router.get('/pieCharts/simplePieChart', (req, res, next) => {
+    res.sendFile(__dirname + '/charts/pieCharts/simplePieChart.html');
+});
 
 /* ---------- SCATTERPLOT ----------*/
 
