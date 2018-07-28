@@ -15,6 +15,10 @@ router.get('/', (req, res, next) => {
 router.get('/barCharts/simpleBarChart', (req, res, next) => {
     res.sendFile(__dirname + '/charts/barCharts/simpleBarChart.html');
 });
+/* simpleBarChart_h */
+router.get('/barCharts/simpleHorizontalBarChart', (req, res, next) => {
+    res.sendFile(__dirname + '/charts/barCharts/simpleHorizontalBarChart.html');
+});
 /* waterfalls */
 router.get('/barCharts/waterfalls', (req, res, next) => {
     res.sendFile(__dirname + '/charts/barCharts/waterfalls.html');

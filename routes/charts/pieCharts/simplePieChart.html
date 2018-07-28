@@ -11,6 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.min.js"></script>
 
+
 </head>
 
 <body>
@@ -35,13 +36,14 @@
     <script type="text/javascript">
         // based on prepared DOM, initialize echarts instance
         var myChart = echarts.init(document.getElementById('main'));
-
         var input;
-        $.get('https://raw.githubusercontent.com/apache/incubator-echarts/master/test/data/simplePieChart.json',
+        $.get('https://raw.githubusercontent.com/joiejunkie/aris/master/data_sources/production/simplePieChart.json',
             function(data) {
 
                 //The data does not come in the right form. We have to first parse it into JSON before we can use it below
-                let input = JSON.parse(data)
+                var input = JSON.parse(data);
+                console.log(input);
+
                 var option = {
                     tooltip: {
                         trigger: 'item',
@@ -50,10 +52,10 @@
                     legend: {
                         orient: 'vertical',
                         x: 'left',
-                        data: input.normal
+                        data: input.name
                     },
                     series: [{
-                        name: 'Demand (units)',
+                        name: 'Demand',
                         type: 'pie',
                         radius: ['50%', '70%'],
                         avoidLabelOverlap: false,
@@ -77,11 +79,13 @@
                         },
                         data: input
                     }]
-                }
+                };
+
+                // use configuration item and data specified to show chart
+                myChart.setOption(option);
+
             }
-        );
-        // use configuration item and data specified to show chart
-        myChart.setOption(option);
+        )
     </script>
 </body>
 
