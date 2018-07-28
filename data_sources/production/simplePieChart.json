@@ -1,21 +1,21 @@
 [{
-        "value": 335,
-        "name": "Manchester"
+        "name": "Manchester",
+        "value": 335
     },
     {
-        "value": 310,
-        "name": "Birmingham"
+        "name": "Birmingham",
+        "value": 310
     },
     {
-        "value": 234,
-        "name": "Glasgow"
+        "name": "Glasgow",
+        "value": 234
     },
     {
-        "value": 135,
-        "name": "Cardiff"
+        "name": "Cardiff",
+        "value": 135
     },
     {
-        "value": 1548,
-        "name": "London"
+        "name": "London",
+        "value": 1548
     }
 ]
