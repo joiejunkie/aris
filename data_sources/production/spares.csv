@@ -1,0 +1,52 @@
+[
+  {
+    "Spare Part": "SKU_1",
+    "SITE_A": 23,
+    "SITE_B": 55
+  },
+  {
+    "Spare Part": "SKU_2",
+    "SITE_A": 22,
+    "SITE_B": 47
+  },
+  {
+    "Spare Part": "SKU_3",
+    "SITE_A": 22,
+    "SITE_B": 26
+  },
+  {
+    "Spare Part": "SKU_4",
+    "SITE_A": 39,
+    "SITE_B": 86
+  },
+  {
+    "Spare Part": "SKU_5",
+    "SITE_A": 29,
+    "SITE_B": 44
+  },
+  {
+    "Spare Part": "SKU_6",
+    "SITE_A": 69,
+    "SITE_B": 41
+  },
+  {
+    "Spare Part": "SKU_7",
+    "SITE_A": 34,
+    "SITE_B": 76
+  },
+  {
+    "Spare Part": "SKU_8",
+    "SITE_A": 82,
+    "SITE_B": 20
+  },
+  {
+    "Spare Part": "SKU_9",
+    "SITE_A": 22,
+    "SITE_B": 20
+  },
+  {
+    "Spare Part": "SKU_10",
+    "SITE_A": 41,
+    "SITE_B": 47
+  }
+]
